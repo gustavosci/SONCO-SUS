@@ -1,0 +1,22 @@
+{
+  "name": "sonco-sus",
+  "version": "0.0.2",
+  "description": "SONCO-SUS Application",
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "author": "Gustavo Santos",
+  "email": "gustavosci@live.com",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "composer-admin": "latest",
+    "composer-client": "latest",
+    "composer-connector-embedded": "latest",
+    "browserfs": "latest",
+    "chai": "latest",
+    "eslint": "latest",
+    "istanbul": "latest",
+    "mkdirp": "latest",
+    "mocha": "latest"
+  }
+}

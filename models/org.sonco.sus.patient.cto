@@ -1,0 +1,29 @@
+namespace org.sonco.sus.patient
+
+asset Patient identified by patientId {
+  o String patientId regex=/[0-9]+/
+  o Contact contact
+  o Integer age
+  o Gender gender
+}
+
+transaction CreatePatient {
+  o String patientId
+  o Contact contact
+  o Integer age
+  o Gender gender
+}
+
+enum Gender {
+  o   MALE
+  o   FEMALE
+}
+
+concept Contact {
+  o String fName
+  o String lname optional
+  o String email
+  o String address
+  o String city
+  o String uf
+}

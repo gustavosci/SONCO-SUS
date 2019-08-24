@@ -1,0 +1,48 @@
+namespace org.sonco.sus.participant
+
+abstract participant SONCOParticipant identified by participantId {
+  o String          participantId
+  o Contact         contact
+}
+
+participant NetworkAdmin extends SONCOParticipant {
+}
+
+participant Patient extends SONCOParticipant {
+  o Integer age
+  o Gender gender
+  o String idPatientAsset optional
+
+}
+
+participant Hospital extends SONCOParticipant {
+  o Type  type
+}
+
+participant StateSecretary extends SONCOParticipant {
+}
+
+participant Daf extends SONCOParticipant {  
+}
+
+participant Warehouse extends SONCOParticipant {
+}
+
+enum Type {
+  o   CACON
+  o   UNACON
+}
+
+enum Gender {
+  o   MALE
+  o   FEMALE
+}
+
+concept Contact {
+  o String fName
+  o String lname optional
+  o String email
+  o String address
+  o String city
+  o String uf
+}

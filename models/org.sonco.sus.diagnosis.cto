@@ -1,0 +1,28 @@
+namespace org.sonco.sus.diagnosis
+
+import org.sonco.sus.patient.Patient
+import org.sonco.sus.participant.Hospital
+
+asset Diagnosis identified by diagnosisId {
+  o String diagnosisId regex=/[0-9]+/ // It will be patientId + date
+  --> Patient patient
+  --> Hospital hospital
+  o String disease
+  o DateTime  date  
+  o Treatment treatment
+  o String description optional
+}
+
+concept Treatment {
+  o   String[] medicine
+  o   DateTime expiration  
+}
+
+transaction CreateDiagnosis {
+  o   String patientId
+  o   String hospitalId
+  o   String disease
+  o   DateTime  date  
+  o   Treatment treatment
+  o   String description optional
+}

@@ -24,8 +24,8 @@ composer network list -c admin@sonco-sus
 
 # To upgrade
 1. composer archive create  --sourceType dir --sourceName ../
-2. composer network install -a sonco-sus@0.0.6.bna -c PeerAdmin@hlfv1
-3. composer network upgrade -c PeerAdmin@hlfv1 -V 0.0.6 -n sonco-sus
+2. composer network install -a sonco-sus@0.0.7.bna -c PeerAdmin@hlfv1
+3. composer network upgrade -c PeerAdmin@hlfv1 -V 0.0.7 -n sonco-sus
 
 
 # Add a new participant
@@ -35,7 +35,7 @@ composer participant add -d '{
   "$class": "org.sonco.sus.participant.Patient",
   "age": 26,
   "gender": "MALE",
-  "participantId": "PA02",
+  "participantId": "PA03",
   "contact": {
     "$class": "org.sonco.sus.participant.Contact",
     "fName": "Gustavo",
@@ -56,7 +56,7 @@ composer identity issue -u DAF01 -a org.sonco.sus.participant.Daf#DAF01 -c admin
 
 composer identity issue -u WH01 -a org.sonco.sus.participant.Warehouse#WH01 -c admin@sonco-sus -x
 
-composer identity issue -u PA02 -a org.sonco.sus.participant.Patient#PA02 -c RS_SAPIRANGA_01@sonco-sus -x
+composer identity issue -u PA03 -a org.sonco.sus.participant.Patient#PA03 -c RS_SAPIRANGA_01@sonco-sus -x
 
 # List the identities
 composer identity list -c admin@sonco-sus

@@ -3,8 +3,6 @@ composer-logs
 temp
 package-lock.json
 npm-debug*
-*.card
-*.bna
 *.crt
 *.key
 *_sk

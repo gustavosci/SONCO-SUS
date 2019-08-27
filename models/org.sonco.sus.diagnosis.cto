@@ -1,16 +1,17 @@
 namespace org.sonco.sus.diagnosis
 
-import org.sonco.sus.patient.Patient
+import org.sonco.sus.participant.Patient
 import org.sonco.sus.participant.Hospital
 
 asset Diagnosis identified by diagnosisId {
-  o String diagnosisId regex=/[0-9]+/ // It will be patientId + date
+  o String diagnosisId // It will be patientId + date
   --> Patient patient
   --> Hospital hospital
   o String disease
   o DateTime  date  
   o Treatment treatment
   o String description optional
+  o String numberApac optional
 }
 
 concept Treatment {
@@ -25,4 +26,9 @@ transaction CreateDiagnosis {
   o   DateTime  date  
   o   Treatment treatment
   o   String description optional
+}
+
+transaction SetApac {
+  o String diagnosisId
+  o String numberApac
 }

@@ -1,0 +1,36 @@
+namespace org.sonco.sus.order
+
+import org.sonco.sus.participant.StateSecretary
+import org.sonco.sus.diagnosis.Diagnosis
+
+asset Order identified by orderId {
+  o String orderId // It will be solicitantId + date
+  --> StateSecretary solicitant
+  --> Diagnosis[] diagnosis
+  o DateTime  date
+  o Status status default="OPEN"
+  o String sentAdditionalInfoToWarehouse optional
+  o String sentAdditionalInfoToHospitals optional
+}
+
+enum Status {
+  o OPEN
+  o SENT_TO_WAREHOUSE
+  o SENT_TO_HOSPITAL
+}
+
+transaction CreateOrder {
+  o String solicitantId
+  --> Diagnosis[] diagnosis
+  o DateTime  date
+}
+
+transaction SendToWarehouse {
+  o String orderId
+  o String sentAdditionalInfoToWarehouse 
+}
+
+transaction SendToHospitals {
+  o String orderId
+  o String sentAdditionalInfoToHospitals
+}

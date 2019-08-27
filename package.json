@@ -1,6 +1,6 @@
 {
   "name": "sonco-sus",
-  "version": "0.0.2",
+  "version": "0.0.6",
   "description": "SONCO-SUS Application",
   "scripts": {
     "test": "mocha --recursive"

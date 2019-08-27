@@ -1,4 +1,6 @@
-// This Rule is needed for all Participants
+/**
+ * System and Network Admin access rules
+ */
 rule SoncoNetworkAdminPermissionSystem {
   description: "can READ the system registries"
   participant: "ANY"
@@ -7,30 +9,37 @@ rule SoncoNetworkAdminPermissionSystem {
   action: ALLOW  
 }
 
-// Allow the 'System Network Admin' to carry out Identities management and Network operations
 rule NetworkControlPermission {
   description:  "give admin ALL access to system resources"
   participant: "org.hyperledger.composer.system.NetworkAdmin"
   operation: ALL
-  resource: "org.hyperledger.composer.system.*"
+  resource: "**"
+  //resource: "org.hyperledger.composer.system.*"
   action: ALLOW  
 }
 
-rule ParticipantRegistryControlPermission {
-  description:  "give admin ALL access to ACME participant types"
-  participant: "org.hyperledger.composer.system.NetworkAdmin"
-  operation: ALL
-  resource: "org.sonco.sus.participant.*"
+rule HospitalAddParticipantPermission {
+  description:  "hospital can add participant"
+  participant: "org.sonco.sus.participant.Hospital"
+  operation: CREATE
+  resource: "org.hyperledger.composer.system.AddParticipant"
   action: ALLOW  
 }
 
-// Read for all registries and participants
-rule SoncoReadAllRegistriesParticipantsPermission {
-  description: "can READ the resource registries"
-  participant: "org.sonco.sus.participant.SONCOParticipant"
-  operation: READ
-  resource: "org.sonco.sus.**"
-  action: ALLOW
+rule HospitalIssueIdentityPermission {
+  description:  "hospital can issue identity"
+  participant: "org.sonco.sus.participant.Hospital"
+  operation: CREATE
+  resource: "org.hyperledger.composer.system.IssueIdentity"
+  action: ALLOW  
+}
+
+rule HospitalIdentityPermission {
+  description:  "hospital can issue identity"
+  participant: "org.sonco.sus.participant.Hospital"
+  operation: CREATE
+  resource: "org.hyperledger.composer.system.Identity"
+  action: ALLOW  
 }
 
 rule SoncoParticipantHistorianPermission {
@@ -41,70 +50,159 @@ rule SoncoParticipantHistorianPermission {
   action: ALLOW  
 }
 
-// Only Hospitals can create and update a new patient
-rule SoncoCreateNewPatientPermission {
-  description: "only hospitals can create a new patient"
-  participant: "org.sonco.sus.participant.Hospital"
+/**
+ * Rules for Participant registry access
+ */
+rule NetworkAdmin_All_EveryParticipants {
+  description:  "give admin ALL access to ACME participant types"
+  participant: "org.hyperledger.composer.system.NetworkAdmin"
   operation: ALL
-  resource: "org.sonco.sus.patient.Patient"
-  transaction: "org.sonco.sus.patient.CreatePatient"
-  action: ALLOW
+  resource: "org.sonco.sus.participant.*"
+  action: ALLOW  
 }
 
-// Only Hospitals can create, update and delete a diagnosis
-rule SoncoCreateNewDiagnosisPermission {
-  description: "only hospitals can create, update and delete a diagnosis"
+rule Hospital_C_U_R_Patient {
+  description:  "hospital can create, update and read a patient"
   participant: "org.sonco.sus.participant.Hospital"
-  operation: ALL
-  resource: "org.sonco.sus.diagnosis.Diagnosis"
-  transaction: "org.sonco.sus.diagnosis.CreateDiagnosis"
-  action: ALLOW
+  operation: CREATE, UPDATE, READ
+  resource: "org.sonco.sus.participant.Patient"
+  action: ALLOW  
 }
 
-// Only patients cannot update a dignosis
-rule SoncoUpdateDiagnosisStateSecretaryPermission {
-  description: "only patients cannot update a dignosis"
-  participant: "org.sonco.sus.participant.StateSecretary"
-  operation: UPDATE
-  resource: "org.sonco.sus.diagnosis.Diagnosis"
-  transaction: "org.sonco.sus.diagnosis.CreateDiagnosis"
-  action: ALLOW
+rule Hospital_R_Itself {
+  description:  "hospital can read itself"
+  participant(p): "org.sonco.sus.participant.Hospital"
+  operation: READ
+  resource(r): "org.sonco.sus.participant.Hospital"
+  condition: (p.participantId == r.participantId)
+  action: ALLOW  
 }
 
-rule SoncoUpdateDiagnosisDafPermission {
-  description: "only patients cannot update a dignosis"
-  participant: "org.sonco.sus.participant.Daf"
-  operation: UPDATE
-  resource: "org.sonco.sus.diagnosis.Diagnosis"
-  transaction: "org.sonco.sus.diagnosis.CreateDiagnosis"
-  action: ALLOW
-}
-
-rule SoncoUpdateDiagnosisWarehousePermission {
-  description: "only patients cannot update a dignosis"
-  participant: "org.sonco.sus.participant.Warehouse"
-  operation: UPDATE
-  resource: "org.sonco.sus.diagnosis.Diagnosis"
-  transaction: "org.sonco.sus.diagnosis.CreateDiagnosis"
-  action: ALLOW
-}
-
-// Patient cannot update a diagnosis
-rule SoncoDiagnosisCRUDPatientDenyPermission {
-  description: "patients cannot update a diagnosis"
-  participant: "org.sonco.sus.participant.Patient"
-  operation: CREATE, UPDATE, DELETE
-  resource: "org.sonco.sus.diagnosis.Diagnosis"
-  transaction: "org.sonco.sus.diagnosis.CreateDiagnosis"
-  action: DENY 
-}
-
-// Patients can read only its diagnosis
-rule SoncoDiagnosisReadByPatientPermission {
-  description: "patients can read only its diagnosis"
+/**
+ * Rules for Asset registry access
+ */
+rule Patient_R_ItsDiagnosis {
+  description: "patients can read its diagnosis"
   participant(p): "org.sonco.sus.participant.Patient"
   operation: READ
   resource(d): "org.sonco.sus.diagnosis.Diagnosis"
-  condition: (p.idPatientAsset == d.patient.patientId)
+  condition: (p.participantId == d.patient.participantId)
+  action: ALLOW
+}
+
+rule Patient_R_Orders {
+  description: "patients can read orders"
+  participant: "org.sonco.sus.participant.Patient"
+  operation: READ
+  resource: "org.sonco.sus.order.Order"
+  action: ALLOW
+}
+
+rule Hospital_R_ItsDiagnosis {
+  description: "hospitals can read its diagnosis"
+  participant(h): "org.sonco.sus.participant.Hospital"
+  operation: READ
+  resource(d): "org.sonco.sus.diagnosis.Diagnosis"
+  condition: (h.participantId == d.hospital.participantId)
+  action: ALLOW
+}
+
+rule Hospital_R_Order {
+  description: "hospitals can read orders"
+  participant: "org.sonco.sus.participant.Hospital"
+  operation: READ
+  resource: "org.sonco.sus.order.Order"
+  action: ALLOW
+}
+
+rule StateSecretary_R_Diagnosis {
+  description: "state secretary can read its diagnosis"
+  participant: "org.sonco.sus.participant.StateSecretary"
+  operation: READ
+  resource: "org.sonco.sus.diagnosis.Diagnosis"
+  action: ALLOW
+}
+
+rule StateSecretary_R_ItsOrders {
+  description: "state secretary can read its orders"
+  participant(s): "org.sonco.sus.participant.StateSecretary"
+  operation: READ
+  resource(o): "org.sonco.sus.order.Order"
+  condition: (s.participantId == o.solicitant.participantId)
+  action: ALLOW
+}
+
+rule Daf_R_Diagnosis {
+  description: "Daf can read its diagnosis"
+  participant: "org.sonco.sus.participant.Daf"
+  operation: READ
+  resource: "org.sonco.sus.diagnosis.Diagnosis"
+  action: ALLOW
+}
+
+rule Daf_R_Order {
+  description: "DAF can read orders"
+  participant: "org.sonco.sus.participant.Daf"
+  operation: READ
+  resource: "org.sonco.sus.order.Order"
+  action: ALLOW
+}
+
+rule Warehouse_R_Diagnosis {
+  description: "Warehouse can read its diagnosis"
+  participant: "org.sonco.sus.participant.Warehouse"
+  operation: READ
+  resource: "org.sonco.sus.diagnosis.Diagnosis"
+  action: ALLOW
+}
+
+rule Warehouse_R_Order {
+  description: "Warehouse can read orders"
+  participant: "org.sonco.sus.participant.Warehouse"
+  operation: READ
+  resource: "org.sonco.sus.order.Order"
+  action: ALLOW
+}
+
+/**
+ * Rules for Transaction registry access
+ */
+ rule Hospital_C_CreateDiagnosis {
+  description: "hospitals can create diagnosis"
+  participant: "org.sonco.sus.participant.Hospital"
+  operation: CREATE
+  resource: "org.sonco.sus.diagnosis.CreateDiagnosis"
+  action: ALLOW
+}
+
+ rule StateSecretary_C_SetApac {
+  description: "state secretary can set apac"
+  participant: "org.sonco.sus.participant.StateSecretary"
+  operation: CREATE
+  resource: "org.sonco.sus.diagnosis.SetApac"
+  action: ALLOW
+}
+
+ rule StateSecretary_C_CreateOrder {
+  description: "state secretary can create order"
+  participant: "org.sonco.sus.participant.StateSecretary"
+  operation: CREATE
+  resource: "org.sonco.sus.order.CreateOrder"
+  action: ALLOW
+}
+
+rule DAF_C_SendOrderToWarehouse {
+  description: "DAF can send order to warehouse"
+  participant: "org.sonco.sus.participant.Daf"
+  operation: CREATE
+  resource: "org.sonco.sus.order.SendToWarehouse"
+  action: ALLOW
+}
+
+rule Warehouse_C_SendOrderToHospitals {
+  description: "warehouse can send order to hospitals"
+  participant: "org.sonco.sus.participant.Warehouse"
+  operation: CREATE
+  resource: "org.sonco.sus.order.SendToHospitals"
   action: ALLOW
 }

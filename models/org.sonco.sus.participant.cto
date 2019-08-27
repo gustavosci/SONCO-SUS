@@ -11,12 +11,11 @@ participant NetworkAdmin extends SONCOParticipant {
 participant Patient extends SONCOParticipant {
   o Integer age
   o Gender gender
-  o String idPatientAsset optional
-
 }
 
 participant Hospital extends SONCOParticipant {
-  o Type  type
+  o Type type
+  --> StateSecretary stateSecretaryResponsible
 }
 
 participant StateSecretary extends SONCOParticipant {
@@ -26,11 +25,12 @@ participant Daf extends SONCOParticipant {
 }
 
 participant Warehouse extends SONCOParticipant {
+  --> StateSecretary stateSecretaryResponsible
 }
 
 enum Type {
-  o   CACON
-  o   UNACON
+  o CACON
+  o UNACON
 }
 
 enum Gender {

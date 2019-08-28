@@ -24,8 +24,8 @@ composer network list -c admin@sonco-sus
 
 # To upgrade
 1. composer archive create  --sourceType dir --sourceName ../
-2. composer network install -a sonco-sus@0.0.7.bna -c PeerAdmin@hlfv1
-3. composer network upgrade -c PeerAdmin@hlfv1 -V 0.0.7 -n sonco-sus
+2. composer network install -a sonco-sus@0.0.14.bna -c PeerAdmin@hlfv1
+3. composer network upgrade -c PeerAdmin@hlfv1 -V 0.0.14 -n sonco-sus
 
 
 # Add a new participant
@@ -62,7 +62,7 @@ composer identity issue -u PA03 -a org.sonco.sus.participant.Patient#PA03 -c RS_
 composer identity list -c admin@sonco-sus
 
 # Launch REST Server
-composer-rest-server -c admin@sonco-sus -n always -w true
+composer-rest-server -c RS01@sonco-sus -n always -w true
 
 # Ping 
 composer network ping -c admin@sonco-sus

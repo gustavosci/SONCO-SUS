@@ -4,7 +4,7 @@ import org.sonco.sus.participant.Patient
 import org.sonco.sus.participant.Hospital
 
 asset Diagnosis identified by diagnosisId {
-  o String diagnosisId // It will be patientId + date
+  o String diagnosisId 
   --> Patient patient
   --> Hospital hospital
   o String disease

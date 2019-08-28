@@ -98,10 +98,10 @@ rule Patient_R_Orders {
   action: ALLOW
 }
 
-rule Hospital_R_ItsDiagnosis {
-  description: "hospitals can read its diagnosis"
+rule Hospital_C_U_R_ItsDiagnosis {
+  description: "hospitals can create, update and read its diagnosis"
   participant(h): "org.sonco.sus.participant.Hospital"
-  operation: READ
+  operation: CREATE, UPDATE, READ
   resource(d): "org.sonco.sus.diagnosis.Diagnosis"
   condition: (h.participantId == d.hospital.participantId)
   action: ALLOW
@@ -115,51 +115,51 @@ rule Hospital_R_Order {
   action: ALLOW
 }
 
-rule StateSecretary_R_Diagnosis {
-  description: "state secretary can read its diagnosis"
+rule StateSecretary_R_U_Diagnosis {
+  description: "state secretary can read and update  diagnosis"
   participant: "org.sonco.sus.participant.StateSecretary"
-  operation: READ
+  operation: READ, UPDATE
   resource: "org.sonco.sus.diagnosis.Diagnosis"
   action: ALLOW
 }
 
-rule StateSecretary_R_ItsOrders {
-  description: "state secretary can read its orders"
+rule StateSecretary_C_U_R_ItsOrders {
+  description: "state secretary can read, create and update its orders"
   participant(s): "org.sonco.sus.participant.StateSecretary"
-  operation: READ
+  operation: READ, CREATE, UPDATE
   resource(o): "org.sonco.sus.order.Order"
   condition: (s.participantId == o.solicitant.participantId)
   action: ALLOW
 }
 
 rule Daf_R_Diagnosis {
-  description: "Daf can read its diagnosis"
+  description: "Daf can read diagnosis"
   participant: "org.sonco.sus.participant.Daf"
   operation: READ
   resource: "org.sonco.sus.diagnosis.Diagnosis"
   action: ALLOW
 }
 
-rule Daf_R_Order {
-  description: "DAF can read orders"
+rule Daf_R_U_Order {
+  description: "DAF can read and update orders"
   participant: "org.sonco.sus.participant.Daf"
-  operation: READ
+  operation: READ, UPDATE
   resource: "org.sonco.sus.order.Order"
   action: ALLOW
 }
 
 rule Warehouse_R_Diagnosis {
-  description: "Warehouse can read its diagnosis"
+  description: "Warehouse can read diagnosis"
   participant: "org.sonco.sus.participant.Warehouse"
   operation: READ
   resource: "org.sonco.sus.diagnosis.Diagnosis"
   action: ALLOW
 }
 
-rule Warehouse_R_Order {
-  description: "Warehouse can read orders"
+rule Warehouse_R_U_Order {
+  description: "Warehouse can read and update orders"
   participant: "org.sonco.sus.participant.Warehouse"
-  operation: READ
+  operation: READ, UPDATE
   resource: "org.sonco.sus.order.Order"
   action: ALLOW
 }

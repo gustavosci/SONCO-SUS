@@ -4,7 +4,7 @@ import org.sonco.sus.participant.StateSecretary
 import org.sonco.sus.diagnosis.Diagnosis
 
 asset Order identified by orderId {
-  o String orderId // It will be solicitantId + date
+  o String orderId 
   --> StateSecretary solicitant
   --> Diagnosis[] diagnosis
   o DateTime  date
@@ -21,7 +21,7 @@ enum Status {
 
 transaction CreateOrder {
   o String solicitantId
-  --> Diagnosis[] diagnosis
+  o String[] diagnosisIds
   o DateTime  date
 }
 
